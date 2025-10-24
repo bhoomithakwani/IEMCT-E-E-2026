@@ -1,0 +1,53 @@
+No code is needed for making an obstacle detecting system using an IR sensor or Ultrasonic sensor ,Buzzer,a 220 ohm resistor ,breadboard,LED,jumper wires. The code is required
+only when using an Arduino or an ESP 32, the following code is used only when using an Arduino.This code works for Platform.IO
+#include <Arduino.h>  
+
+
+const int irSensorPin = 8;    // IR sensor OUT pin connected to digital pin 8
+const int ledPin = 9;          // LED connected to digital pin 9
+const int buzzerPin = 10;      // Buzzer connected to digital pin 10
+
+void setup() {
+  // Initialize pin modes
+  pinMode(irSensorPin, INPUT);   // IR sensor as INPUT
+  pinMode(ledPin, OUTPUT);        // LED as OUTPUT
+  pinMode(buzzerPin, OUTPUT);     // Buzzer as OUTPUT
+  
+  // Initialize serial communication for debugging 
+  Serial.begin(9600);
+  
+  // Turn off LED and Buzzer at startup
+  digitalWrite(ledPin, LOW);
+  digitalWrite(buzzerPin, LOW);
+  
+  Serial.println("IR Obstacle Detection System Started");
+  Serial.println("Waiting for obstacles...");
+}
+
+void loop() {
+  // Read the IR sensor value
+  int sensorValue = digitalRead(irSensorPin);
+  
+  // Check if obstacle is detected
+  // IR sensor outputs LOW (0) when obstacle is detected
+  if (sensorValue == LOW) {
+    // Obstacle detected!
+    digitalWrite(ledPin, HIGH);       // Turn ON LED
+    digitalWrite(buzzerPin, HIGH);    // Turn ON Buzzer
+    
+    // Print to Serial Monitor
+    Serial.println(" OBSTACLE DETECTED!");
+    
+    delay(100);  // Small delay to debounce sensor
+  } 
+  else {
+    // No obstacle detected
+    digitalWrite(ledPin, LOW);        // Turn OFF LED
+    digitalWrite(buzzerPin, LOW);     // Turn OFF Buzzer
+    
+    // Print to Serial Monitor
+    Serial.println(" No obstacle ");
+    
+    delay(100);  // Small delay
+  }
+}
