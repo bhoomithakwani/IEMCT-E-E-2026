@@ -1,0 +1,40 @@
+master-
+#include <Wire.h>
+
+void setup() {
+  Wire.begin();               // Master mode
+  Serial.begin(9600);
+}
+
+void loop() {
+  Wire.requestFrom(8, 1);     // Request 1 byte from Slave (address 8)
+
+  if (Wire.available()) {
+    byte value = Wire.read();
+    Serial.print("Pot value: ");
+    Serial.println(value);
+  }
+
+  delay(500);
+}
+
+
+
+slave- 
+#include <Wire.h>
+
+int potValue = 0;
+
+void setup() {
+  Wire.begin(8);              // Slave address = 8
+  Wire.onRequest(sendData);   // Master requests data
+}
+
+void loop() {
+  potValue = analogRead(A0);  // Read potentiometer
+}
+
+void sendData() {
+  byte mappedValue = map(potValue, 0, 1023, 0, 255);
+  Wire.write(mappedValue);    // Send 1 byte to master
+}
