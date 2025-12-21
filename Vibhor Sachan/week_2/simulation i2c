@@ -1,0 +1,33 @@
+Master:
+#include <Wire.h>
+
+void setup() {
+  Wire.begin();
+}
+
+void loop() {
+  Wire.beginTransmission(8);  
+  Wire.write("Hello this is vibi");
+  Wire.endTransmission();
+  delay(1000);
+}
+
+
+Slave:
+#include <Wire.h>
+
+void receiveEvent(int bytes) {
+  while (Wire.available()) {
+    char c = Wire.read();
+    Serial.print(c);
+  }
+  Serial.println();
+}
+
+void setup() {
+  Serial.begin(9600);
+  Wire.begin(8);
+  Wire.onReceive(receiveEvent);
+}
+
+void loop(){}
