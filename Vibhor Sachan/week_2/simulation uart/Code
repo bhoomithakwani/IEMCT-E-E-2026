@@ -1,0 +1,28 @@
+Arduino A (Transmitter)
+
+void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  if (Serial.available()) {
+    String msg = Serial.readStringUntil('\n');
+    Serial.println(msg);
+  }
+}
+
+
+
+Arduino B (Reciever)
+
+void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  if (Serial.available()) {
+    String received = Serial.readStringUntil('\n');
+    Serial.println("Received: ");
+    Serial.println(received);
+  }
+}
