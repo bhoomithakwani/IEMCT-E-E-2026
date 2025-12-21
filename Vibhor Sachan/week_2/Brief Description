@@ -1,0 +1,14 @@
+UART (Universal Asynchronous Receiver–Transmitter):
+  It the simplest form of serial communication, where two devices exchange data directly using a transmit (TX) and receive (RX) line.
+  Since it does not use a clock signal, both devices must operate at the same baud rate to understand each other.
+  UART is widely used for debugging, serial monitors, Bluetooth modules, and GPS systems.
+
+I²C (Inter-Integrated Circuit):
+  It is a bus-based communication protocol that allows multiple devices to communicate using just two shared lines: a data line (SDA) and a clock line (SCL).
+  Each connected device has a unique address, enabling a single master controller to communicate with many sensors or peripherals on the same bus.
+  I²C is commonly used with sensors, real-time clocks, and displays, and is especially useful in cases of clean wiring and efficient pin usage.
+
+SPI (Serial Peripheral Interface):
+  It is a high-speed synchronous communication protocol used when fast and reliable data transfer is required.
+  It uses separate lines for data transmission, data reception, clock, and device selection, allowing full-duplex communication between a master and multiple slaves.
+  SPI is commonly found in applications such as SD cards, TFT displays, and RF modules, and helps students understand performance-critical communication in real hardware systems.
