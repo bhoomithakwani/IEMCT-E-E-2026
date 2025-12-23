@@ -1,0 +1,76 @@
+#include <LiquidCrystal.h>
+
+const int triggerPin = 2;
+const int echoPin = 3;
+const int maxDistance = 100; // 100 cm detection range
+
+LiquidCrystal lcd(8, 9, 4, 5, 6, 7);
+
+const int buzzerPin = 11;
+int previousDistance = 0;
+unsigned long lastDetectionTime = 0;
+const unsigned long detectionDelay = 3000; // 3 seconds
+
+long getDistance() {
+  digitalWrite(triggerPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(triggerPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(triggerPin, LOW);
+
+  long duration = pulseIn(echoPin, HIGH);
+  long distance = duration * 0.034 / 2; // convert to cm
+  return distance;
+}
+
+void setup() {
+  lcd.begin(16, 2);
+  Serial.begin(9600);
+  pinMode(triggerPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+  pinMode(buzzerPin, OUTPUT);
+}
+
+void loop() {
+  unsigned int distance = getDistance();
+
+  if (distance > 0 && distance <= maxDistance) {
+    int distanceDifference = abs(distance - previousDistance);
+
+    if (distanceDifference <= 1) {
+      lcd.setCursor(0, 0);
+      lcd.print("Object Detected ");
+      lcd.setCursor(0, 1);
+      lcd.print(distance);
+      lcd.print("cm Away!   ");
+      lastDetectionTime = millis();
+    } else if (distanceDifference > 1) {
+      lcd.setCursor(0, 0);
+      lcd.print("Motion Detected!");
+      lcd.setCursor(0, 1);
+      lcd.print(distance);
+      lcd.print("cm Away!   ");
+      lastDetectionTime = millis();
+    }
+
+    if ((millis() - lastDetectionTime) >= detectionDelay) {
+      lcd.clear();
+      noTone(buzzerPin);
+    } else {
+      tone(buzzerPin, 1000, 255);
+    }
+  } else {
+    if ((millis() - lastDetectionTime) >= detectionDelay) {
+      lcd.clear();
+      noTone(buzzerPin);
+    }
+  }
+
+  Serial.print("Distance: ");
+  Serial.print(distance);
+  Serial.println(" cm");
+
+  previousDistance = distance;
+
+  delay(500);
+}
