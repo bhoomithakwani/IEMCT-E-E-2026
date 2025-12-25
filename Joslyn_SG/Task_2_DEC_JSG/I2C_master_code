@@ -1,0 +1,25 @@
+#include <Wire.h>
+
+#define SLAVE_ADDRESS 0x08
+
+void setup()
+{
+  Wire.begin();            // Join I2C as master
+  Serial.begin(9600);
+}
+
+void loop()
+{
+  Wire.requestFrom(SLAVE_ADDRESS, 2); // Request 2 bytes
+
+  if (Wire.available() == 2)
+  {
+    int low = Wire.read();
+    int high = Wire.read();
+    int sensorValue = (high << 8) | low;
+
+    Serial.println(sensorValue);
+  }
+
+  delay(500);
+}
