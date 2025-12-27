@@ -1,1 +1,11 @@
+void setup() {
+  Serial.begin(9600);     // Start UART communication
+}
+
+void loop() {
+  int sensorValue = analogRead(A0); // Read potentiometer
+  Serial.print("Sensor Value: ");
+  Serial.println(sensorValue);     // Send data via UART
+  delay(500);
+}
 
