@@ -1,1 +1,39 @@
+slave
+#include <Wire.h>
+
+int sensorValue = 0;
+
+void setup() {
+  Wire.begin(8);  // Slave address
+  Wire.onRequest(sendData);
+}
+
+void loop() {
+  sensorValue = analogRead(A0);
+}
+
+void sendData() {
+  Wire.write(sensorValue / 4); // Send 0–255
+}
+
+
+
+
+master
+#include <Wire.h>
+
+void setup() {
+  Wire.begin();        // Master
+  Serial.begin(9600);
+}
+
+void loop() {
+  Wire.requestFrom(8, 1); // Request 1 byte from slave
+  while (Wire.available()) {
+    int data = Wire.read();
+    Serial.print("Received: ");
+    Serial.println(data);
+  }
+  delay(500);
+}
 
